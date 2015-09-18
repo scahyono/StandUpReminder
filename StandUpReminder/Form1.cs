@@ -31,6 +31,7 @@ namespace StandUpReminder
         private void timer1_Tick(object sender, EventArgs e)
         {
             TimeSpan span = lastLoginDate.AddMinutes(60).Subtract(DateTime.Now);
+            TimeSpan showSpan = span.Subtract(TimeSpan.FromMinutes(10));
             int totalSeconds = (int)span.TotalSeconds;
             progressBar1.Value = totalSeconds;
 
@@ -52,14 +53,16 @@ namespace StandUpReminder
                 progressBar1.ForeColor = Color.Yellow;
                 prefix = "Please, lock Windows now and walk away! ";
                 Show();
+                showSpan = span;
             } 
             else
             {
                 progressBar1.ForeColor = Color.Red;
                 prefix = "Automatic lock imminent! ";
                 Show();
+                showSpan = span;
             }
-            string timeLeft = span.Minutes.ToString("00") + ":" + span.Seconds.ToString("00");
+            string timeLeft = showSpan.Minutes.ToString("00") + ":" + showSpan.Seconds.ToString("00");
             label1.Text = prefix + timeLeft + " minutes left";
             notifyIcon1.Text = "Stand Up Reminder " + timeLeft;
         }
@@ -67,7 +70,7 @@ namespace StandUpReminder
         private void Form1_Load(object sender, EventArgs e)
         {
             Rectangle workingArea = Screen.GetWorkingArea(this);
-            this.Location = new Point(workingArea.Right - Size.Width, workingArea.Bottom - Size.Height);
+            this.Location = new Point(workingArea.Right - Size.Width - SystemInformation.VerticalScrollBarWidth, workingArea.Bottom - Size.Height - SystemInformation.HorizontalScrollBarHeight);
 
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             Console.ReadLine();

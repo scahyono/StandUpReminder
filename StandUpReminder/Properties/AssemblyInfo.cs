@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MyTrayApp")]
+[assembly: AssemblyTitle("StandUpReminder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("SCK-CEN")]
-[assembly: AssemblyProduct("MyTrayApp")]
-[assembly: AssemblyCopyright("Copyright © SCK-CEN 2015")]
+[assembly: AssemblyCompany("Singgih Cahyono")]
+[assembly: AssemblyProduct("StandUpReminder")]
+[assembly: AssemblyCopyright("Copyright © Singgih Cahyono 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
