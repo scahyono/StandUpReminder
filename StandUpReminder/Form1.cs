@@ -17,10 +17,20 @@ namespace StandUpReminder
 
         DateTime lastLoginDate = DateTime.Now;
         bool allowExit = false;
+        Color originalBackColor;
 
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            Rectangle workingArea = Screen.GetWorkingArea(this);
+            this.Location = new Point(workingArea.Right - Size.Width - SystemInformation.VerticalScrollBarWidth, workingArea.Bottom - Size.Height - SystemInformation.HorizontalScrollBarHeight);
+
+            Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
+            originalBackColor = progressBar1.BackColor;
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -45,19 +55,18 @@ namespace StandUpReminder
 
             if (totalSeconds > 600)
             {
-                progressBar1.ForeColor = Color.Green;
                 prefix = "";
             }
             else if (totalSeconds > 60)
             {
-                progressBar1.ForeColor = Color.Yellow;
+                progressBar1.BackColor = Color.Yellow;
                 prefix = "Please, lock Windows now and walk away! ";
                 Show();
                 showSpan = span;
             } 
             else
             {
-                progressBar1.ForeColor = Color.Red;
+                progressBar1.BackColor = Color.Red;
                 prefix = "Automatic lock imminent! ";
                 Show();
                 showSpan = span;
@@ -65,15 +74,6 @@ namespace StandUpReminder
             string timeLeft = showSpan.Minutes.ToString("00") + ":" + showSpan.Seconds.ToString("00");
             label1.Text = prefix + timeLeft + " minutes left";
             notifyIcon1.Text = "Stand Up Reminder " + timeLeft;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            Rectangle workingArea = Screen.GetWorkingArea(this);
-            this.Location = new Point(workingArea.Right - Size.Width - SystemInformation.VerticalScrollBarWidth, workingArea.Bottom - Size.Height - SystemInformation.HorizontalScrollBarHeight);
-
-            Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
-            Console.ReadLine();
         }
 
         void SystemEvents_SessionSwitch(object sender, Microsoft.Win32.SessionSwitchEventArgs e)
@@ -86,6 +86,8 @@ namespace StandUpReminder
             {
                 timer1.Enabled = true;
                 lastLoginDate = DateTime.Now;
+                progressBar1.ForeColor = Color.Green;
+                progressBar1.BackColor = originalBackColor;
             }
         }
 
