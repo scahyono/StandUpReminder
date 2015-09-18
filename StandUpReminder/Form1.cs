@@ -31,6 +31,13 @@ namespace StandUpReminder
 
             Microsoft.Win32.SystemEvents.SessionSwitch += new Microsoft.Win32.SessionSwitchEventHandler(SystemEvents_SessionSwitch);
             originalBackColor = progressBar1.BackColor;
+
+            RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            String value = (string)key.GetValue("StandUpReminder");
+            if (value == "dummy") {
+                key.SetValue("StandUpReminder", System.Reflection.Assembly.GetEntryAssembly().Location, RegistryValueKind.String);
+            }
+            key.Close();
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
