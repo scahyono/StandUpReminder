@@ -59,8 +59,9 @@ namespace StandUpReminder
                 prefix = "Automatic lock imminent! ";
                 Show();
             }
-
-            label1.Text = span.Minutes.ToString("00") + ":" + span.Seconds.ToString("00") + " minutes left";
+            string timeLeft = span.Minutes.ToString("00") + ":" + span.Seconds.ToString("00");
+            label1.Text = prefix + timeLeft + " minutes left";
+            notifyIcon1.Text = "Stand Up Reminder " + timeLeft;
         }
 
         private void Form1_Load(object sender, EventArgs e)

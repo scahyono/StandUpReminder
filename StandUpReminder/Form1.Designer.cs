@@ -68,8 +68,6 @@
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.BalloonTipText = "Stand Up Reminder";
-            this.notifyIcon1.BalloonTipTitle = "Stand Up Reminder";
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Stand Up Reminder";
