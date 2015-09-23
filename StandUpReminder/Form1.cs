@@ -31,7 +31,7 @@ namespace StandUpReminder
         private IntPtr desktopHandle; //Window handle for the desktop    
         private IntPtr shellHandle; //Window handle for the shell    
         const int TIMER_MINUTES = 60;
-        const int WARNING_SECONDS = 60;
+        const int WARNING_SECONDS = 600;
         const int AUTOLOCK_SECONDS = 10;
         DateTime lastLoginDate = DateTime.Now;
         bool allowExit = false;
