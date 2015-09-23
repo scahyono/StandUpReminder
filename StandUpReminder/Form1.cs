@@ -19,6 +19,8 @@ namespace StandUpReminder
     public partial class Form1 : Form
     {
         [DllImport("user32.dll")]
+        public static extern bool LockWorkStation();
+        [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
         [DllImport("user32.dll")]
         private static extern IntPtr GetDesktopWindow();
@@ -29,8 +31,8 @@ namespace StandUpReminder
         private IntPtr desktopHandle; //Window handle for the desktop    
         private IntPtr shellHandle; //Window handle for the shell    
         const int TIMER_MINUTES = 60;
-        const int WARNING_SECONDS = 3595;//60;
-        const int AUTOLOCK_SECONDS = 3590;//10
+        const int WARNING_SECONDS = 60;
+        const int AUTOLOCK_SECONDS = 10;
         DateTime lastLoginDate = DateTime.Now;
         bool allowExit = false;
         Color originalBackColor;
@@ -40,27 +42,31 @@ namespace StandUpReminder
             InitializeComponent();
         }
 
-        private bool IsThereFullScreen()         {
+        private bool IsThereFullScreen()
+        {
             //Get the handles for the desktop and shell now.    
-            desktopHandle = GetDesktopWindow();    
+            desktopHandle = GetDesktopWindow();
             shellHandle = GetShellWindow();
             //Detect if the current app is running in full screen    
-            bool runningFullScreen = false; 
-            RECT appBounds; 
-            Rectangle screenBounds; 
-            IntPtr hWnd;    
+            bool runningFullScreen = false;
+            RECT appBounds;
+            Rectangle screenBounds;
+            IntPtr hWnd;
             //get the dimensions of the active window    
-            hWnd = GetForegroundWindow();    
-            if (hWnd!=null && !hWnd.Equals(IntPtr.Zero))    {        
+            hWnd = GetForegroundWindow();
+            if (hWnd != null && !hWnd.Equals(IntPtr.Zero))
+            {
                 //Check we haven't picked up the desktop or the shell        
-                if (!(hWnd.Equals(desktopHandle) || hWnd.Equals(shellHandle)))        {            
-                    GetWindowRect(hWnd, out appBounds);            
+                if (!(hWnd.Equals(desktopHandle) || hWnd.Equals(shellHandle)))
+                {
+                    GetWindowRect(hWnd, out appBounds);
                     //determine if window is fullscreen            
-                    screenBounds = Screen.FromHandle(hWnd).Bounds;            
-                    if ((appBounds.Bottom - appBounds.Top) == screenBounds.Height && (appBounds.Right - appBounds.Left) == screenBounds.Width)            {                
-                        runningFullScreen = true;            
-                    }        
-                }    
+                    screenBounds = Screen.FromHandle(hWnd).Bounds;
+                    if ((appBounds.Bottom - appBounds.Top) == screenBounds.Height && (appBounds.Right - appBounds.Left) == screenBounds.Width)
+                    {
+                        runningFullScreen = true;
+                    }
+                }
             }
             return runningFullScreen;
         }
@@ -96,7 +102,7 @@ namespace StandUpReminder
 
             if (totalSeconds <= 0)
             {
-                Process.Start(@"C:\Windows\system32\rundll32.exe", "user32.dll,LockWorkStation");
+                LockWorkStation();
                 timer1.Enabled = false;
                 return;
             }
